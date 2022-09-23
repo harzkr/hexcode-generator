@@ -13,7 +13,7 @@ export default function Home() {
       .then((data) => {
         console.log(data);
 
-        setCode(data.code);
+        setCode(data.code.toUpperCase());
       });
   };
 
