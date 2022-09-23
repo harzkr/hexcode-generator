@@ -2,6 +2,7 @@ import { client } from "../../lib/redis";
 import { hexspeakList } from "../../utils/hexspeaklist";
 
 const ranges = [
+  "00000000",
   "10000000",
   "20000000",
   "30000000",
@@ -62,8 +63,7 @@ const validCode = (code) => {
 
 const populateKeys = async () => {
   current_codes = await client.hGetAll("codes");
-
-  if (!current_codes) {
+  if (!current_codes || Object.keys(current_codes).length === 0) {
     await populateRedis();
     current_codes = await client.hGetAll("codes");
   }
@@ -100,7 +100,10 @@ const populateRedis = async () => {
       i < parseInt(elem, 16) + current_range + 1000;
       i++
     ) {
-      const hexCode = i.toString(16).toUpperCase();
+      let hexCode = i.toString(16).toUpperCase();
+      if(hexCode.length < 8){
+        hexCode = hexCode.padStart(8, '0')
+      }
       if (validCode(hexCode)) {
         await client.hSet("codes", i, hexCode);
       }
