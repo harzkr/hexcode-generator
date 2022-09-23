@@ -4,11 +4,18 @@ const resetRedis = () => {
   client.flushall();
 }
 
+const validCode = (code) => {
+  return true;
+};
+
 const populateRedis = async () => {
   for(let i=1; i < 10; i++) {
-    await client.hSet('codes', i.toString(16).toUpperCase(), 1);
+    const currCode = i.toString(16).toUpperCase();
+    if(validCode(currCode)) {
+      await client.hSet('codes', currCode, 1);
+    }
     if(i === 16**8 - 1) {
-      console.log(i.toString(16).toUpperCase())
+      console.log(currCode)
       console.log('doing last element')
     }
   }
