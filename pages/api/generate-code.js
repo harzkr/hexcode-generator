@@ -1,11 +1,24 @@
 import { client } from "../../lib/redis";
 
-//we start at the lowest hex value, assigning a decimal equivalent value for referencing from how the data is stored in redis
-let start_counter = 268435456;
+const ranges = [
+  '10000000',
+  '20000000',
+  '30000000',
+  '40000000',
+  '50000000',
+  '60000000',
+  '70000000',
+  '80000000',
+  '90000000',
+  'A0000000',
+  'B0000000',
+  'C0000000',
+  'D0000000',
+  'E0000000',
+  'F0000000',
+];
 
-// we increment by 10000 just as a range to randomly select from
-let current_counter = 268445456;
-const end_counter = 16 ** 8;
+let current_range = 0;
 
 // Keeping a track of current codes and keys for not having to reference redis everytime
 let current_keys = [];
@@ -16,7 +29,24 @@ const resetRedis = async () => {
 };
 
 const validCode = (code) => {
-  return true;
+  const codeArray = code.split("");
+  let diff = 0;
+
+  if(codeArray.every(char => char === codeArray[0])){
+    return false;
+  }
+
+  for(let i=0;i<codeArray.length-1;i++){
+    if(i === 0){
+      diff = codeArray[i+1].charCodeAt(0) - codeArray[i].charCodeAt(0);
+    } else {
+      if(diff !== codeArray[i+1].charCodeAt(0) - codeArray[i].charCodeAt(0)){
+        return true;
+      }
+    }
+  }
+
+  return false;
 };
 
 const populateKeys = async () => {
@@ -27,7 +57,7 @@ const populateKeys = async () => {
     current_codes = await client.hGetAll("codes");
   }
 
-  current_keys = Object.keys(allCodes);
+  current_keys = Object.keys(current_codes);
 };
 
 const fetchCode = async () => {
@@ -47,45 +77,31 @@ const fetchCode = async () => {
     await resetRedis();
   }
 
+  console.log(current_keys.length,'current length')
+
   return code;
 };
 
 const populateRedis = async () => {
-  for (let i = start_counter; i < current_counter; i++) {
-    const currCode = i.toString(16).toUpperCase();
-    if (validCode(currCode)) {
-      await client.hSet("codes", i, currCode);
+  for(const elem of ranges){
+    for(let i = parseInt(elem,16) + current_range; i < parseInt(elem,16) + current_range + 1000; i++){
+      const hexCode = i.toString(16).toUpperCase();
+      if(validCode(hexCode)){
+        await client.hSet("codes", i, hexCode);
+      }
     }
   }
 
-  console.log("done populating redis");
-  start_counter = current_counter;
-  current_counter = current_counter + 10000;
+  current_range += 1000;
 
-  if (current_counter > end_counter) {
-    current_counter = end_counter;
-  }
-
-  if (start_counter === end_counter) {
+  if(current_range >= 268435456){
+    current_range = 0;
     await resetRedis();
-    start_counter = 268435456;
-    current_counter = 268445456;
   }
-};
-
-const runTester = () => {
-  console.time("runTester");
-  for (let i = 268435456; i < 268445456; i++) {
-    console.log(i.toString(16).toUpperCase());
-    if (i === 268445456 - 1) {
-      console.log(i.toString(16).toUpperCase());
-      console.log("doing last element");
-    }
-  }
-  console.timeEnd("runTester");
 };
 
 export default async function handler(req, res) {
+  //populateRedis();
   const fetchedCode = await fetchCode();
 
   console.log("final fetched code", fetchedCode);
