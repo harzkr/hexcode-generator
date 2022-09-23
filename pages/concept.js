@@ -43,8 +43,13 @@ export default function Concept() {
           </Typography>
         </li>
         <li>
+            <Typography>
+                I have used a hashmap structure with redis to make the transactions as fast as possible
+            </Typography>
+        </li>
+        <li>
           <Typography>
-            On the backend, which can be seen through in the api folder, in the generate-code file, we handle our code generation processes
+            Implementation wise, on the backend, which can be seen through in the api folder, in the generate-code file, we handle our code generation processes
           </Typography>
         </li>
         <li>
@@ -54,12 +59,12 @@ export default function Concept() {
         </li>
         <li>
           <Typography>
-            In every code population run, I focus on generating ~16,000 codes, which stay in memory and are referred to and responded with in every call
+            In every code population run, I focus on generating ~16,000 codes, storing them in redis, called in, and which stay in memory and are referred to in the response of the API call
           </Typography>
         </li>
         <li>
           <Typography>
-            This reference is done in a random manner, and the effective changes are made to the in app memory arrays and keys to keep them up to date
+            This referencing of these codes is done in a random manner, and the changes are made to the in app memory arrays and keys to keep them up to date
           </Typography>
         </li>
         <li>
@@ -80,6 +85,17 @@ export default function Concept() {
         <li>
             <Typography>
                 By this implementation we ensure as well that all codes generated are unique
+            </Typography>
+        </li>
+        <li>
+            <Typography>
+                Finally to discuss the advantage of such a process over a general process which does not proceed with storage is as follows:
+                In the process of generating codes directly in a random manner, validating them and then sharing them over, one of the big problems arises as once the number of codes generated
+                cross a big threshold. For example, imagine, if all but one hexadecimal numbers have been generated, to get at the final number
+                we would have to generate through innumerable possibilities before we can get that number which has not been generated yet. Also in a way it will beg to store all our outputs
+                and keep comparing what we have to what we generate to get the codes uniquely. And with the huge data set (16**8), it just becomes more problematic To do so in an efficient manner, doing those in small ranges is a good way to tackle all of the numbers
+                in an exhaustive manner as well as get the variations as required. The picking of the number from the ranges can be modified to many other patterns to randomise as one would want, but in general
+                it will serve the purpose efficiently of generating the codes uniquely and exhaustively
             </Typography>
         </li>
       </ul>
