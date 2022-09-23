@@ -1,15 +1,17 @@
-import { Typography } from "@mui/material";
+import { Typography, Button } from "@mui/material";
 import styles from "../styles/concepts.module.css";
 import Link from "next/link";
 
 export default function Concept() {
   return (
     <div className={styles.container}>
-      <Typography style={{
-        fontWeight:"bold"
+      <Button style={{
+        position: "fixed",
+        top: 20,
+        right: 20,
       }}>
-        <Link href="/">GO BACK TO THE IMPLEMENTATION</Link>
-      </Typography>
+        <Link href="/">IMPLEMENTATION</Link>
+      </Button>
       <Typography variant="h4" className={styles.title}>
         CONCEPTS AND DISCUSSIONS
       </Typography>

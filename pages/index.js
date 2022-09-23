@@ -2,6 +2,7 @@ import React from "react";
 import styles from "../styles/Home.module.css";
 import { Typography, Button, Grid, Paper } from "@mui/material";
 import { client } from "../lib/redis";
+import Link from "next/link";
 
 export async function getStaticProps() {
   //NextJS, initiating redis connection on preload, needs to run only once
@@ -29,6 +30,13 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
+      <Button style={{
+        position: "fixed",
+        top: 20,
+        right: 20,
+      }}>
+        <Link href="/concept">CONCEPTS</Link>
+      </Button>
       <Typography variant="h3" component="h1" gutterBottom>
         Hexadecimal Code Generator
       </Typography>
