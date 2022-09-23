@@ -5,11 +5,7 @@ import Link from "next/link";
 export default function Concept() {
   return (
     <div className={styles.container}>
-      <Button style={{
-        position: "fixed",
-        top: 20,
-        right: 20,
-      }}>
+      <Button className={styles.linkButton}>
         <Link href="/">IMPLEMENTATION</Link>
       </Button>
       <Typography variant="h4" className={styles.title}>

@@ -5,12 +5,12 @@ import { client } from "../lib/redis";
 import Link from "next/link";
 
 export async function getStaticProps() {
-  //NextJS, initiating redis connection on preload, needs to run only once
+  //NextJS, initiating redis connection on page preload
   console.log(client);
 
   return {
     props: {
-      preload: "test",
+      preload: "ready",
     },
   };
 }
@@ -30,11 +30,7 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      <Button style={{
-        position: "fixed",
-        top: 20,
-        right: 20,
-      }}>
+      <Button className={styles.linkButton}>
         <Link href="/concept">CONCEPTS</Link>
       </Button>
       <Typography variant="h3" component="h1" gutterBottom>

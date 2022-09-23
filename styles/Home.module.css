@@ -37,3 +37,9 @@
 .marginBuffer{
     margin-top: 4rem;
 }
+
+.linkButton{
+  position: fixed;
+  top: 20px;
+  right: 20px;
+}
