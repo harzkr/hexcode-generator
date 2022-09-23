@@ -18,6 +18,11 @@ const validCode = (code) => {
 const populateKeys = async () => {
   current_codes = await client.hGetAll('codes');
 
+  if(!current_codes){
+    await populateRedis();
+    current_codes = await client.hGetAll('codes');
+  }
+
   current_keys = Object.keys(allCodes);
 }
 
