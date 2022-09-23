@@ -121,10 +121,7 @@ const populateRedis = async () => {
 };
 
 export default async function handler(req, res) {
-  //populateRedis();
   const fetchedCode = await fetchCode();
-
-  console.log("final fetched code", fetchedCode);
 
   res.status(200).json({ code: fetchedCode });
 }
