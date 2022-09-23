@@ -26,10 +26,6 @@ let current_range = 0;
 let current_keys = [];
 let current_codes = {};
 
-const resetRedis = async () => {
-  await client.flushAll();
-};
-
 const validCode = (code) => {
   const codeArray = code.split("");
   let diff = 0;
@@ -83,15 +79,28 @@ const fetchCode = async () => {
 
   current_keys.splice(current_keys.indexOf(randomKey), 1);
   delete current_codes[randomKey];
+  await client.hDel("codes", randomKey);
 
   if (current_keys.length === 0) {
-    await resetRedis();
+    await client.del("codes");
   }
 
   return code;
 };
 
 const populateRedis = async () => {
+
+  //Precautionary check to avoid overwriting existing codes
+  const existing_codes = await client.hGetAll("codes");
+
+  if(existing_codes){
+    try{
+      await client.del("codes");
+    } catch(err){
+      console.log(err);
+    }
+  }
+
   for (const elem of ranges) {
     for (
       let i = parseInt(elem, 16) + current_range;
@@ -116,7 +125,7 @@ const populateRedis = async () => {
   //If current range crosses from one range to another, means all possibilities have exhausted, and we start fresh!
   if (current_range >= 268435456) {
     current_range = 0;
-    await resetRedis();
+    await client.del("codes");
   }
 };
 
