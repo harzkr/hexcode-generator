@@ -6,8 +6,6 @@ export default function Home() {
   const [code, setCode] = React.useState("00000000");
 
   const generateNewCode = () => {
-    console.log("Generating new code");
-
     fetch("/api/generate-code")
       .then((res) => res.json())
       .then((data) => {
