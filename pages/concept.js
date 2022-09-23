@@ -1,34 +1,20 @@
 import { Typography } from "@mui/material";
+import styles from "../styles/concepts.module.css";
 
 export default function Concept() {
   return (
     <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "2rem",
-      }}
+      className={styles.container}
     >
       <Typography
         variant="h4"
-        style={{
-          marginTop: 20,
-          marginBottom: 40,
-          color: "darkblue",
-        }}
+        className={styles.title}
       >
         CONCEPTS AND DISCUSSIONS
       </Typography>
       <ul>
         <li>
-          <Typography
-            style={{
-              marginBottom: 10,
-              color: "#333",
-            }}
-          >
+          <Typography className={styles.text}>
             The application aims at implementing a simple but a robust solution
             to generating hexadecimal codes, 8 digits in length with the
             constrained rules of doing it uniquely, exhaustively and with the
