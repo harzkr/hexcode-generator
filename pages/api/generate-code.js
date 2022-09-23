@@ -1,21 +1,22 @@
 import { client } from "../../lib/redis";
+import { hexspeakList } from "../../utils/hexspeaklist";
 
 const ranges = [
-  '10000000',
-  '20000000',
-  '30000000',
-  '40000000',
-  '50000000',
-  '60000000',
-  '70000000',
-  '80000000',
-  '90000000',
-  'A0000000',
-  'B0000000',
-  'C0000000',
-  'D0000000',
-  'E0000000',
-  'F0000000',
+  "10000000",
+  "20000000",
+  "30000000",
+  "40000000",
+  "50000000",
+  "60000000",
+  "70000000",
+  "80000000",
+  "90000000",
+  "A0000000",
+  "B0000000",
+  "C0000000",
+  "D0000000",
+  "E0000000",
+  "F0000000",
 ];
 
 let current_range = 0;
@@ -32,15 +33,25 @@ const validCode = (code) => {
   const codeArray = code.split("");
   let diff = 0;
 
-  if(codeArray.every(char => char === codeArray[0])){
+  //Same charachter checks
+  if (codeArray.every((char) => char === codeArray[0])) {
     return false;
   }
 
-  for(let i=0;i<codeArray.length-1;i++){
-    if(i === 0){
-      diff = codeArray[i+1].charCodeAt(0) - codeArray[i].charCodeAt(0);
+  //hexspeak checks
+  if (hexspeakList.includes(code)) {
+    return false;
+  }
+
+  //sequence checks
+  for (let i = 0; i < codeArray.length - 1; i++) {
+    if (i === 0) {
+      diff = codeArray[i + 1].charCodeAt(0) - codeArray[i].charCodeAt(0);
     } else {
-      if(diff !== codeArray[i+1].charCodeAt(0) - codeArray[i].charCodeAt(0)){
+      if (
+        diff !==
+        codeArray[i + 1].charCodeAt(0) - codeArray[i].charCodeAt(0)
+      ) {
         return true;
       }
     }
@@ -77,16 +88,20 @@ const fetchCode = async () => {
     await resetRedis();
   }
 
-  console.log(current_keys.length,'current length')
+  console.log(current_keys.length, "current length");
 
   return code;
 };
 
 const populateRedis = async () => {
-  for(const elem of ranges){
-    for(let i = parseInt(elem,16) + current_range; i < parseInt(elem,16) + current_range + 1000; i++){
+  for (const elem of ranges) {
+    for (
+      let i = parseInt(elem, 16) + current_range;
+      i < parseInt(elem, 16) + current_range + 1000;
+      i++
+    ) {
       const hexCode = i.toString(16).toUpperCase();
-      if(validCode(hexCode)){
+      if (validCode(hexCode)) {
         await client.hSet("codes", i, hexCode);
       }
     }
@@ -94,7 +109,7 @@ const populateRedis = async () => {
 
   current_range += 1000;
 
-  if(current_range >= 268435456){
+  if (current_range >= 268435456) {
     current_range = 0;
     await resetRedis();
   }
