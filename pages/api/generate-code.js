@@ -4,6 +4,7 @@ let current_counter = 268445456;
 const end_counter = 16**8;
 
 let current_keys = [];
+let current_codes = {};
 
 
 const resetRedis = () => {
@@ -14,15 +15,23 @@ const validCode = (code) => {
   return true;
 };
 
+const populateKeys = async () => {
+  current_codes = await client.hGetAll('codes');
+
+  current_keys = Object.keys(allCodes);
+}
+
 const fetchCode = async () => {
+  if(current_keys === []) {
+    await populateKeys();
+  }
 
-  const allCodes = await client.hGetAll('codes');
+  const randomKey = current_keys[Math.floor(Math.random() * current_keys.length)];
 
-  const allKeys = Object.keys(allCodes);
+  const code = current_codes[randomKey];
 
-  const randomKey = allKeys[Math.floor(Math.random() * allKeys.length)];
-
-  const code = allCodes[randomKey];
+  current_keys.splice(current_keys.indexOf(randomKey), 1);
+  delete current_codes[randomKey];
 
   return code;
 };
