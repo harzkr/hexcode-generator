@@ -88,8 +88,6 @@ const fetchCode = async () => {
     await resetRedis();
   }
 
-  console.log(current_keys.length, "current length");
-
   return code;
 };
 
@@ -101,6 +99,8 @@ const populateRedis = async () => {
       i++
     ) {
       let hexCode = i.toString(16).toUpperCase();
+
+      //Padding hexcode with 0s to make it 8 characters long
       if(hexCode.length < 8){
         hexCode = hexCode.padStart(8, '0')
       }
@@ -110,8 +110,10 @@ const populateRedis = async () => {
     }
   }
 
+  //Incrementing current range to select 1000 numbers from each sequence
   current_range += 1000;
 
+  //If current range crosses from one range to another, means all possibilities have exhausted, and we start fresh!
   if (current_range >= 268435456) {
     current_range = 0;
     await resetRedis();
