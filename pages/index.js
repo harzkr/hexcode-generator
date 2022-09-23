@@ -1,6 +1,17 @@
 import React from "react";
 import styles from "../styles/Home.module.css";
 import { Typography, Button, Grid, Paper } from "@mui/material";
+import { client } from "../lib/redis";
+
+export async function getStaticProps() {
+  console.log(client);
+
+  return{
+    props:{
+      redis: 'test'
+    }
+  }
+}
 
 export default function Home() {
   const [code, setCode] = React.useState("00000000");
