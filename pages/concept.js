@@ -1,15 +1,16 @@
 import { Typography } from "@mui/material";
 import styles from "../styles/concepts.module.css";
+import Link from "next/link";
 
 export default function Concept() {
   return (
-    <div
-      className={styles.container}
-    >
-      <Typography
-        variant="h4"
-        className={styles.title}
-      >
+    <div className={styles.container}>
+      <Typography style={{
+        fontWeight:"bold"
+      }}>
+        <Link href="/">GO BACK TO THE IMPLEMENTATION</Link>
+      </Typography>
+      <Typography variant="h4" className={styles.title}>
         CONCEPTS AND DISCUSSIONS
       </Typography>
       <ul>
@@ -22,19 +23,19 @@ export default function Concept() {
           </Typography>
         </li>
         <li>
-          <Typography>
+          <Typography className={styles.text}>
             To see it in action, click 'Generate' button on the home page, and
             you will see a new code generated every time you click
           </Typography>
         </li>
         <li>
-          <Typography>
+          <Typography className={styles.text}>
             You can also call http://localhost:3000/api/generate-code to get a
             new code directly as a response
           </Typography>
         </li>
         <li>
-          <Typography>
+          <Typography className={styles.text}>
             The stack uses a simple NextJS setup with a couple of routes and a
             single API endpoint. It uses redis as a cache to store the codes,
             but not in a necessary way Even in app memory can be used for what
@@ -43,7 +44,7 @@ export default function Concept() {
           </Typography>
         </li>
         <li>
-          <Typography>
+          <Typography className={styles.text}>
             The stack uses a simple NextJS setup with a couple of routes and a
             single API endpoint. It uses redis as a cache to store the codes,
             but not in a necessary way Even in app memory can be used for what
@@ -52,66 +53,66 @@ export default function Concept() {
           </Typography>
         </li>
         <li>
-          <Typography>
+          <Typography className={styles.text}>
             I have used a hashmap structure with redis to make the transactions
             as fast as possible
           </Typography>
         </li>
         <li>
-          <Typography>
+          <Typography className={styles.text}>
             Implementation wise, on the backend, which can be seen through in
             the api folder, in the generate-code file, we handle our code
             generation processes
           </Typography>
         </li>
         <li>
-          <Typography>
+          <Typography className={styles.text}>
             Conceptually, I have divided first the entire range of 8 digit
             hexadecimal numbers into 16 ranges. There I focus mainly on
             generating codes from each range exhaustively
           </Typography>
         </li>
         <li>
-          <Typography>
+          <Typography className={styles.text}>
             In every code population run, I focus on generating ~16,000 codes,
             storing them in redis, called in, and which stay in memory and are
             referred to in the response of the API call
           </Typography>
         </li>
         <li>
-          <Typography>
+          <Typography className={styles.text}>
             This referencing of these codes is done in a random manner, and the
             changes are made to the in app memory arrays and keys to keep them
             up to date
           </Typography>
         </li>
         <li>
-          <Typography>
+          <Typography className={styles.text}>
             Once an array/set gets exhausted, the range is changed on the fly
             for every hexadecimal range, and then the process is repeated
           </Typography>
         </li>
         <li>
-          <Typography>
+          <Typography className={styles.text}>
             This way, we ensure, we basically exhaust our possibilities, before
             resetting and starting afresh
           </Typography>
         </li>
         <li>
-          <Typography>
+          <Typography className={styles.text}>
             Also before we save the codes in redis, we check them for not being
             in the exceptions list, having an 'odd' sequence or having a
             'repeating' sequence
           </Typography>
         </li>
         <li>
-          <Typography>
+          <Typography className={styles.text}>
             By this implementation we ensure as well that all codes generated
             are unique
           </Typography>
         </li>
         <li>
-          <Typography>
+          <Typography className={styles.text}>
             Finally to discuss the advantage of such a process over a general
             process which does not proceed with storage is as follows: In the
             process of generating codes directly in a random manner, validating
@@ -133,7 +134,7 @@ export default function Concept() {
           </Typography>
         </li>
         <li>
-          <Typography>
+          <Typography className={styles.text}>
             Finally, structure, preview and presentation wise I thought doing it
             in this NextJS manner was a good way to go about it. It is a simple
             stack, and can be easily extended to a more complex one
