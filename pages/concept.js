@@ -35,19 +35,10 @@ export default function Concept() {
         <li>
           <Typography className={styles.text}>
             The stack uses a simple NextJS setup with a couple of routes and a
-            single API endpoint. It uses redis as a cache to store the codes,
-            but not in a necessary way Even in app memory can be used for what
-            redis is being used here for, it just lends a cleanliness to the
-            structure, and hints at the possibility of scaling the app
-          </Typography>
-        </li>
-        <li>
-          <Typography className={styles.text}>
-            The stack uses a simple NextJS setup with a couple of routes and a
-            single API endpoint. It uses redis as a cache to store the codes,
-            but not in a necessary way Even in app memory can be used for what
-            redis is being used here for, it just lends a cleanliness to the
-            structure, and hints at the possibility of scaling the app
+            single API endpoint. It uses redis as a cache to store the codes and
+            to store other relevant pointers required for the code mapping part,
+            and plays an important role in handling the data along with the
+            required structures It makes the app scalable within the data range
           </Typography>
         </li>
         <li>
@@ -107,6 +98,13 @@ export default function Concept() {
           <Typography className={styles.text}>
             By this implementation we ensure as well that all codes generated
             are unique
+          </Typography>
+        </li>
+        <li>
+          <Typography className={styles.text}>
+            A custom test has been added to check through with generating 100k
+            keys, and screening for duplicates, it can be found in the
+            `api/testapi` route
           </Typography>
         </li>
         <li>
