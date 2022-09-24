@@ -10,8 +10,6 @@ export default function Home() {
     fetch("/api/generate-code")
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
-
         setCode(data.code.toUpperCase());
       });
   };
