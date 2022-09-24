@@ -18,9 +18,7 @@ To see it in action, click 'Generate' button on the home page, and you will see 
 
 You can also call http://localhost:3000/api/generate-code to get a new code directly as a response
 
-The stack uses a simple NextJS setup with a couple of routes and a single API endpoint. It uses redis as a cache to store the codes, but not in a necessary way Even in app memory can be used for what redis is being used here for, it just lends a cleanliness to the structure, and hints at the possibility of scaling the app
-
-The stack uses a simple NextJS setup with a couple of routes and a single API endpoint. It uses redis as a cache to store the codes, but not in a necessary way Even in app memory can be used for what redis is being used here for, it just lends a cleanliness to the structure, and hints at the possibility of scaling the app
+The stack uses a simple NextJS setup with a couple of routes and a single API endpoint. It uses redis as a cache to store the codes and to store other relevant pointers required for the code mapping part, and plays an important role in handling the data along with the required structures It makes the app scalable within the data range
 
 I have used a hashmap structure with redis to make the transactions as fast as possible
 
@@ -40,6 +38,8 @@ Also before we save the codes in redis, we check them for not being in the excep
 
 By this implementation we ensure as well that all codes generated are unique
 
-Finally to discuss the advantage of such a process over a general process which does not proceed with storage is as follows: In the process of generating codes directly in a random manner, validating them and then sharing them over, one of the big problems arises as once the number of codes generated cross a big threshold. For example, imagine, if all but one hexadecimal numbers have been generated, to get at the final number we would have to generate through innumerable possibilities before we can get that number which has not been generated yet. Also in a way it will beg to store all our outputs and keep comparing what we have to what we generate to get the codes uniquely. And with the huge data set (16**8), it just becomes more problematic To do so in an efficient manner, doing those in small ranges is a good way to tackle all of the numbers in an exhaustive manner as well as get the variations as required. The picking of the number from the ranges can be modified to many other patterns to randomise as one would want, but in general it will serve the purpose efficiently of generating the codes uniquely and exhaustively
+A custom test has been added to check through with generating 100k keys, and screening for duplicates, it can be found in the `api/testapi` route
+
+Finally to discuss the advantage of such a process over a general process which does not proceed with storage is as follows: In the process of generating codes directly in a random manner, validating them and then sharing them over, one of the big problems arises as once the number of codes generated cross a big threshold. For example, imagine, if all but one hexadecimal numbers have been generated, to get at the final number we would have to generate through innumerable possibilities before we can get that number which has not been generated yet. Also in a way it will beg to store all our outputs and keep comparing what we have to what we generate to get the codes uniquely. And with the huge data set (16\*\*8), it just becomes more problematic To do so in an efficient manner, doing those in small ranges is a good way to tackle all of the numbers in an exhaustive manner as well as get the variations as required. The picking of the number from the ranges can be modified to many other patterns to randomise as one would want, but in general it will serve the purpose efficiently of generating the codes uniquely and exhaustively
 
 Finally, structure, preview and presentation wise I thought doing it in this NextJS manner was a good way to go about it. It is a simple stack, and can be easily extended to a more complex one
