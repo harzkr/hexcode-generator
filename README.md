@@ -1,16 +1,20 @@
 ## Getting Started
 
-First, run the development server:
+Please ensure you have redis running locally on port 6379, if you don't then run command: (requires docker compose)
 
 ```bash
-npm run dev
-# or
+yarn start-redis
+```
+
+then, run the development server:
+
+```bash
 yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-### Concepts and Discussions
+## Concepts and Discussions
 
 The application aims at implementing a simple but a robust solution to generating hexadecimal codes, 8 digits in length with the constrained rules of doing it uniquely, exhaustively and with the exceptions as specified in the rules
 
