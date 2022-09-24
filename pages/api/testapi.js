@@ -12,11 +12,11 @@ const test = async () => {
 
 
 export default async function handler(req, res) {
-    console.time('start');
+
     const arr = Array.from(Array(100000).keys());
     const arr_check = []
 
-    console.log(arr.length);
+    console.log(arr.length, 'initial array length check');
 
 
     for(const elem of arr){
@@ -27,10 +27,9 @@ export default async function handler(req, res) {
 
     const hasDuplicates = (_arr) => _arr.length !== new Set(_arr).size;
 
-    console.log(arr_check.length);
+    console.log(arr_check.length, 'codes array length check');
 
     const testRes = hasDuplicates(arr_check);
-    console.log(testRes);
 
     res.status(200).json({ result:testRes });
 }

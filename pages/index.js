@@ -1,19 +1,7 @@
 import React from "react";
 import styles from "../styles/Home.module.css";
 import { Typography, Button, Grid, Paper } from "@mui/material";
-import { client } from "../lib/redis";
 import Link from "next/link";
-
-export async function getStaticProps() {
-  //NextJS, initiating redis connection on page preload
-  console.log(client);
-
-  return {
-    props: {
-      preload: "ready",
-    },
-  };
-}
 
 export default function Home() {
   const [code, setCode] = React.useState("00000000");

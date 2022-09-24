@@ -20,8 +20,6 @@ const ranges = [
   "F0000000",
 ];
 
-let current_range = 0;
-
 // Keeping a track of current codes and keys for not having to reference redis everytime
 let current_keys = [];
 let current_codes = {};
@@ -81,17 +79,20 @@ const fetchCode = async () => {
   delete current_codes[randomKey];
   await client.hDel("codes", randomKey);
 
-  if (current_keys.length === 0) {
-    await client.del("codes");
-  }
-
   return code;
 };
 
 const populateRedis = async () => {
 
-  //Precautionary check to avoid overwriting existing codes
   const existing_codes = await client.hGetAll("codes");
+
+  let current_range = await client.get('current_range');
+  
+  if(!current_range){
+    current_range = 0;
+  } else {
+    current_range = parseInt(current_range);
+  }
 
   if(existing_codes){
     try{
@@ -120,13 +121,15 @@ const populateRedis = async () => {
   }
 
   //Incrementing current range to select 1000 numbers from each sequence
-  current_range += 1000;
+  current_range = current_range + 1000;
 
   //If current range crosses from one range to another, means all possibilities have exhausted, and we start fresh!
   if (current_range >= 268435456) {
     current_range = 0;
     await client.del("codes");
   }
+
+  await client.set('current_range', current_range);
 };
 
 export default async function handler(req, res) {
